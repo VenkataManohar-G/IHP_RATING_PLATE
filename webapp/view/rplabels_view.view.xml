@@ -1,0 +1,121 @@
+<mvc:View controllerName="rplabels.controller.rplabels_view"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m" xmlns:f="sap.ui.layout.form"
+    xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout">
+    <Page id="page" title="{i18n>title}">
+        <content>
+            <VBox id="id_vbox" class="sapUiSmallMargin">
+                <f:SimpleForm id="id_simpleform" editable="true" layout="ColumnLayout" title="{i18n>titleform}" labelSpanXL="3"
+                            labelSpanL="3"
+                            labelSpanM="3"
+                            labelSpanS="12"
+                            adjustLabelSpan="false"
+                            emptySpanXL="4"
+                            emptySpanL="4"
+                            emptySpanM="4"
+                            emptySpanS="0"
+                            columnsXL="1"
+                            columnsL="1"
+                            columnsM="1" >
+                    <f:toolbar>
+				        <Toolbar id="TB1">
+					        <Title id="Title1" text=""/>
+					        <ToolbarSpacer id="id_toolspacer" />
+					        <Button id="id_execute" icon="sap-icon://create-entry-time" type="Emphasized"/>
+					        <Button id="id_activate" icon="sap-icon://edit" type="Emphasized" />
+				        </Toolbar>
+			        </f:toolbar>
+                    <f:content>
+                        <core:Title id="id_stitle" text="{i18n>titlecore}"></core:Title>
+                            <Label id="id_plant_label" text="{i18n>plant}" design="Bold" width="100%" required="true" textAlign="Begin" textDirection="LTR" />
+                            <Input id="id_plant" showSuggestion="true"
+			                                     showTableSuggestionValueHelp="false"
+			                                     suggestionRows="{/Plants}" showValueHelp="true" change="onPlantChange"  valueHelpRequest=".onPlantVH">
+                            <suggestionColumns>
+                                <Column id="id_col_plant">
+                                    <Label id="id_label_plant" text="Plant" />
+                                </Column>
+                                <Column id="id_col_planttext"
+                                    hAlign="Center">
+                                    <Label id="id_label_planttxt" text="Description" />
+                                </Column>
+                            </suggestionColumns>
+                            <suggestionRows>
+                                <ColumnListItem id="id_collist_plant">
+                                    <Label id="id_txt_plant" text="{Plant}" />
+                                    <Label id="id_txt_text" text="{PlantName}" />
+                                </ColumnListItem>
+                            </suggestionRows>                     
+                            </Input>
+                            <Label id="id_printer_label" text="{i18n>printer}" design="Bold" width="100%" required="true" textAlign="Begin" textDirection="LTR" />
+                            <Input id="id_printer" showValueHelp="true"  valueHelpRequest=".onPrinterVH" />
+                            <Label id="id_job_label" text="{i18n>job}" design="Bold" width="100%" required="true" textAlign="Begin" textDirection="LTR" />
+                            <Input id="id_job" showValueHelp="true"  valueHelpRequest=".onJobVH" />
+                    </f:content>
+                </f:SimpleForm>
+            </VBox>
+            <VBox class="sapUiSmallMargin" id="tableContainer1">
+                <Table id="tableId1" width="auto" mode="Delete" delete="deleteRow" inset="false" enableBusyIndicator="true"
+                    sticky="ColumnHeaders,HeaderToolbar"
+                    growing="true"
+                    alternateRowColors="true"
+                    showNoData="true"
+                    items="{
+                            path: 'Entries>/'
+                        }">
+                        <headerToolbar>
+								<OverflowToolbar id="id_tabletoolbar1">
+									<Title id="id_title" text="{i18n>tabletitle}" level="H2"/>
+									<ToolbarSpacer id="id_toolbar1"/>
+									<Button id="id_add_button" text="{i18n>add}" icon="sap-icon://add" type="Emphasized" press="onAddEntry"/>
+								</OverflowToolbar>
+						</headerToolbar>
+                        <columns>
+								<Column id="id_column1" visible="false">
+									<Text id="id_srno" text="S.No"/>
+								</Column>
+								<Column id="id_column2" width="auto">
+									<Text id="id_label" text="{i18n>label}"/>
+								</Column>
+								<Column id="id_column3" width="auto">
+									<Text id="id_material" text="{i18n>material}"/>
+								</Column>
+                                <Column id="id_column4" hAlign="Right" width="120px">
+									<Text id="id_copy" />
+								</Column>
+						</columns>
+                        <items>
+							<ColumnListItem id="id_uploadcolumnlist1" vAlign="Middle" >
+								<cells>
+                                    <Input  id="_IDsno"                	   value="{Entries>Id}" />
+                                    <Input  id="id_label_add"  		       value="{Entries>Label}" />
+                                    <Input  id="id_material_add"  		   value="{Entries>Material}" showSuggestion="true"
+			                                     showTableSuggestionValueHelp="false"
+			                                     suggestionRows="{ path: 'Materials>/',
+                                                                   templateShareable: true }" showValueHelp="true"  
+                                                 valueHelpRequest=".onMaterialVH" >
+                                        <suggestionColumns>
+                                            <Column id="id_col_material">
+                                                <Label id="id_label_material" text="Material" />
+                                            </Column>
+                                            <Column id="id_col_mattext"
+                                                hAlign="Center">
+                                                <Label id="id_label_mattxt" text="Description" />
+                                            </Column>
+                                        </suggestionColumns>
+                                        <suggestionRows>
+                                            <ColumnListItem id="id_collist_mat">
+                                                <Label id="id_txt_mat" text="{Materials>Material}" />
+                                                <Label id="id_txt_mattext" text="{Materials>MaterialText}" />
+                                            </ColumnListItem>
+                                        </suggestionRows> 
+                                    </Input>
+                                    <Button id="id_copy_add"   type="Emphasized" icon="sap-icon://copy"></Button>
+                                </cells>
+                            </ColumnListItem>
+                        </items>
+                </Table>
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>
