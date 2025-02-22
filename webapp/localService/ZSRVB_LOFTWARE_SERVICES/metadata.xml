@@ -35,6 +35,12 @@
     </edmx:Reference>
     <edmx:DataServices m:DataServiceVersion="2.0">
         <Schema Namespace="cds_zsrvd_loftware_services" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+            <EntityType Name="CurrentUserType" sap:label="Current User" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="jobname"/>
+                </Key>
+                <Property Name="jobname" Type="Edm.String" Nullable="false" MaxLength="250"/>
+            </EntityType>
             <EntityType Name="MaterialsType" sap:label="Value Help for Materials" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="Material"/>
@@ -45,6 +51,88 @@
                 <Property Name="MaterialGroup" Type="Edm.String" MaxLength="9" sap:display-format="UpperCase" sap:label="Product Group"/>
                 <Property Name="MaterialType" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Product Type"/>
                 <Property Name="Plant" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Plant"/>
+            </EntityType>
+            <EntityType Name="MaterialsDataType" sap:label="Material Characteristics" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="Material"/>
+                </Key>
+                <Property Name="Material" Type="Edm.String" Nullable="false" MaxLength="18"/>
+                <Property Name="insepectionMemo" Type="Edm.String" MaxLength="18"/>
+                <Property Name="quantity" Type="Edm.String" MaxLength="3" sap:semantics="unit-of-measure"/>
+                <Property Name="quantity_GRGI" Type="Edm.Decimal" Precision="13" Scale="3" sap:unit="quantity"/>
+                <Property Name="labelType" Type="Edm.String" MaxLength="2"/>
+                <Property Name="labelFrom" Type="Edm.String" MaxLength="2"/>
+                <Property Name="materialOld" Type="Edm.String" MaxLength="18"/>
+                <Property Name="articleNo_EAN_UPC" Type="Edm.String" MaxLength="18"/>
+                <Property Name="materialGroup" Type="Edm.String" MaxLength="20"/>
+                <Property Name="materialDescription" Type="Edm.String" MaxLength="40"/>
+                <Property Name="serialNo" Type="Edm.String" MaxLength="18"/>
+                <Property Name="orderNo" Type="Edm.String" MaxLength="12"/>
+                <Property Name="objectlistCounter" Type="Edm.Byte"/>
+                <Property Name="objectlisCounterMax" Type="Edm.Byte"/>
+                <Property Name="materialSubstitute" Type="Edm.String" MaxLength="18"/>
+                <Property Name="userText" Type="Edm.String" MaxLength="25"/>
+                <Property Name="location" Type="Edm.String" MaxLength="60"/>
+                <Property Name="rp001" Type="Edm.String" MaxLength="18"/>
+                <Property Name="rp002" Type="Edm.String" MaxLength="30"/>
+                <Property Name="rp003" Type="Edm.String" MaxLength="10"/>
+                <Property Name="rp004" Type="Edm.String" MaxLength="9"/>
+                <Property Name="rp005" Type="Edm.String" MaxLength="10"/>
+                <Property Name="rp006" Type="Edm.String" MaxLength="10"/>
+                <Property Name="rp007" Type="Edm.String" MaxLength="10"/>
+                <Property Name="rp008" Type="Edm.String" MaxLength="18"/>
+                <Property Name="rp009" Type="Edm.String" MaxLength="18"/>
+                <Property Name="rp010" Type="Edm.String" MaxLength="20"/>
+                <Property Name="rp011" Type="Edm.String" MaxLength="10"/>
+                <Property Name="rp012" Type="Edm.String" MaxLength="10"/>
+                <Property Name="rp013" Type="Edm.String" MaxLength="30"/>
+                <Property Name="rp014" Type="Edm.String" MaxLength="18"/>
+                <Property Name="rp015" Type="Edm.String" MaxLength="30"/>
+                <Property Name="rp016" Type="Edm.String" MaxLength="18"/>
+                <Property Name="rp017" Type="Edm.String" MaxLength="30"/>
+                <Property Name="rp018" Type="Edm.String" MaxLength="30"/>
+                <Property Name="rp019" Type="Edm.String" MaxLength="18"/>
+                <Property Name="rp020" Type="Edm.String" MaxLength="20"/>
+                <Property Name="rp021" Type="Edm.String" MaxLength="10"/>
+                <Property Name="rp022" Type="Edm.String" MaxLength="10"/>
+                <Property Name="rp023" Type="Edm.String" MaxLength="30"/>
+                <Property Name="rp024" Type="Edm.String" MaxLength="18"/>
+                <Property Name="rp025" Type="Edm.String" MaxLength="30"/>
+                <Property Name="rp026" Type="Edm.String" MaxLength="18"/>
+                <Property Name="rp027" Type="Edm.String" MaxLength="30"/>
+                <Property Name="rp028" Type="Edm.String" MaxLength="30"/>
+                <Property Name="rp029" Type="Edm.String" MaxLength="18"/>
+                <Property Name="rp030" Type="Edm.String" MaxLength="20"/>
+                <Property Name="rp031" Type="Edm.String" MaxLength="10"/>
+                <Property Name="rp032" Type="Edm.String" MaxLength="10"/>
+                <Property Name="rp033" Type="Edm.String" MaxLength="30"/>
+                <Property Name="rp034" Type="Edm.String" MaxLength="18"/>
+                <Property Name="rp035" Type="Edm.String" MaxLength="30"/>
+                <Property Name="rp036" Type="Edm.String" MaxLength="18"/>
+                <Property Name="rp037" Type="Edm.String" MaxLength="30"/>
+                <Property Name="rp038" Type="Edm.String" MaxLength="30"/>
+                <Property Name="rp039" Type="Edm.String" MaxLength="30"/>
+                <Property Name="rp040" Type="Edm.String" MaxLength="30"/>
+                <Property Name="rp041" Type="Edm.String" MaxLength="10"/>
+                <Property Name="rp042" Type="Edm.String" MaxLength="10"/>
+                <Property Name="rp043" Type="Edm.String" MaxLength="30"/>
+                <Property Name="rp044" Type="Edm.String" MaxLength="18"/>
+                <Property Name="rp045" Type="Edm.String" MaxLength="30"/>
+                <Property Name="rp046" Type="Edm.String" MaxLength="18"/>
+                <Property Name="rp047" Type="Edm.String" MaxLength="30"/>
+                <Property Name="rp048" Type="Edm.String" MaxLength="30"/>
+                <Property Name="rp049" Type="Edm.String" MaxLength="18"/>
+                <Property Name="rp050" Type="Edm.String" MaxLength="20"/>
+                <Property Name="rp051" Type="Edm.String" MaxLength="10"/>
+                <Property Name="rp052" Type="Edm.String" MaxLength="10"/>
+                <Property Name="rp053" Type="Edm.String" MaxLength="30"/>
+                <Property Name="rp054" Type="Edm.String" MaxLength="18"/>
+                <Property Name="rp055" Type="Edm.String" MaxLength="30"/>
+                <Property Name="rp056" Type="Edm.String" MaxLength="18"/>
+                <Property Name="rp057" Type="Edm.String" MaxLength="30"/>
+                <Property Name="rp058" Type="Edm.String" MaxLength="30"/>
+                <Property Name="rp059" Type="Edm.String" MaxLength="30"/>
+                <Property Name="rp060" Type="Edm.String" MaxLength="30"/>
             </EntityType>
             <EntityType Name="PlantsType" sap:label="Plant Value Help" sap:content-version="1">
                 <Key>
@@ -67,14 +155,50 @@
                 <Property Name="BusinessPlace" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Business Place"/>
             </EntityType>
             <EntityContainer Name="cds_zsrvd_loftware_services_Entities" m:IsDefaultEntityContainer="true" sap:message-scope-supported="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="CurrentUser" EntityType="cds_zsrvd_loftware_services.CurrentUserType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
                 <EntitySet Name="Materials" EntityType="cds_zsrvd_loftware_services.MaterialsType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
+                <EntitySet Name="MaterialsData" EntityType="cds_zsrvd_loftware_services.MaterialsDataType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
                 <EntitySet Name="Plants" EntityType="cds_zsrvd_loftware_services.PlantsType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
             </EntityContainer>
             <Annotation Term="Core.SchemaVersion" String="1.0.0" xmlns="http://docs.oasis-open.org/odata/ns/edm"/>
             <Annotations Target="cds_zsrvd_loftware_services.cds_zsrvd_loftware_services_Entities" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Common.ApplyMultiUnitBehaviorForSortingAndFiltering" Bool="true"/>
             </Annotations>
+            <Annotations Target="cds_zsrvd_loftware_services.cds_zsrvd_loftware_services_Entities/CurrentUser" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record>
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.InsertRestrictions">
+                    <Record>
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record>
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
             <Annotations Target="cds_zsrvd_loftware_services.cds_zsrvd_loftware_services_Entities/Materials" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record>
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.InsertRestrictions">
+                    <Record>
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record>
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_zsrvd_loftware_services.cds_zsrvd_loftware_services_Entities/MaterialsData" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Capabilities.DeleteRestrictions">
                     <Record>
                         <PropertyValue Property="Deletable" Bool="false"/>

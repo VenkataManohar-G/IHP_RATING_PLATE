@@ -1,120 +1,125 @@
 {
-    "_version": "1.65.0",
-    "sap.app": {
-        "id": "rplabels",
-        "type": "application",
-        "i18n": "i18n/i18n.properties",
-        "applicationVersion": {
-            "version": "0.0.1"
-        },
-        "title": "{{appTitle}}",
-        "description": "{{appDescription}}",
-        "resources": "resources.json",
-        "sourceTemplate": {
-            "id": "@sap/generator-fiori:basic",
-            "version": "1.16.3",
-            "toolsId": "40b09127-c846-4116-86f5-c31d39337a7f"
-        },
-        "dataSources": {
-            "ZSRVB_LOFTWARE_SERVICES": {
-                "uri": "/sap/opu/odata/sap/ZSRVB_LOFTWARE_SERVICES",
-                "type": "OData",
-                "settings": {
-                    "annotations": [],
-                    "localUri": "localService/metadata.xml",
-                    "odataVersion": "2.0"
-                }
-            }
-        }
+  "_version": "1.65.0",
+  "sap.app": {
+    "id": "rplabels",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
     },
-    "sap.ui": {
-        "technology": "UI5",
-        "icons": {
-            "icon": "",
-            "favIcon": "",
-            "phone": "",
-            "phone@2": "",
-            "tablet": "",
-            "tablet@2": ""
-        },
-        "deviceTypes": {
-            "desktop": true,
-            "tablet": true,
-            "phone": true
-        }
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:basic",
+      "version": "1.16.3",
+      "toolsId": "40b09127-c846-4116-86f5-c31d39337a7f"
     },
-    "sap.ui5": {
-        "flexEnabled": true,
-        "dependencies": {
-            "minUI5Version": "1.132.1",
-            "libs": {
-                "sap.m": {},
-                "sap.ui.core": {}
-            }
-        },
-        "contentDensities": {
-            "compact": true,
-            "cozy": true
-        },
-        "models": {
-            "i18n": {
-                "type": "sap.ui.model.resource.ResourceModel",
-                "settings": {
-                    "bundleName": "rplabels.i18n.i18n"
-                }
-            },
-            "": {
-                "preload": true,
-                "dataSource": "ZSRVB_LOFTWARE_SERVICES",
-                "settings": {
-                    "defaultBindingMode": "TwoWay",
-                    "defaultCountMode": "Inline",
-                    "refreshAfterChange": false,
-                    "metadataUrlParams": {
-                        "sap-value-list": "none"
-                    }
-                }
-            }
-        },
-        "resources": {
-            "css": [
-                {
-                    "uri": "css/style.css"
-                }
-            ]
-        },
-        "routing": {
-            "config": {
-                "routerClass": "sap.m.routing.Router",
-                "controlAggregation": "pages",
-                "controlId": "app",
-                "transition": "slide",
-                "type": "View",
-                "viewType": "XML",
-                "path": "rplabels.view",
-                "async": true,
-                "viewPath": "rplabels.view"
-            },
-            "routes": [
-                {
-                    "name": "Routerplabels_view",
-                    "pattern": ":?query:",
-                    "target": [
-                        "Targetrplabels_view"
-                    ]
-                }
-            ],
-            "targets": {
-                "Targetrplabels_view": {
-                    "id": "rplabels_view",
-                    "name": "rplabels_view"
-                }
-            }
-        },
-        "rootView": {
-            "viewName": "rplabels.view.App",
-            "type": "XML",
-            "id": "App"
+    "dataSources": {
+      "ZSRVB_LOFTWARE_SERVICES": {
+        "uri": "/sap/opu/odata/sap/ZSRVB_LOFTWARE_SERVICES/",
+        "type": "OData",
+        "settings": {
+          "annotations": [],
+          "localUri": "localService/ZSRVB_LOFTWARE_SERVICES/metadata.xml",
+          "odataVersion": "2.0"
         }
+      }
     }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.132.1",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "rplabels.i18n.i18n"
+        }
+      },
+      "": {
+        "preload": true,
+        "dataSource": "ZSRVB_LOFTWARE_SERVICES",
+        "settings": {
+          "defaultBindingMode": "TwoWay",
+          "defaultCountMode": "Inline",
+          "refreshAfterChange": false,
+          "metadataUrlParams": {
+            "sap-value-list": "none"
+          }
+        }
+      },
+      "ZSRVB_LOFTWARE_SERVICES": {
+        "dataSource": "ZSRVB_LOFTWARE_SERVICES",
+        "preload": true,
+        "settings": {}
+      }
+    },
+    "resources": {
+      "css": [
+        {
+          "uri": "css/style.css"
+        }
+      ]
+    },
+    "routing": {
+      "config": {
+        "routerClass": "sap.m.routing.Router",
+        "controlAggregation": "pages",
+        "controlId": "app",
+        "transition": "slide",
+        "type": "View",
+        "viewType": "XML",
+        "path": "rplabels.view",
+        "async": true,
+        "viewPath": "rplabels.view"
+      },
+      "routes": [
+        {
+          "name": "Routerplabels_view",
+          "pattern": ":?query:",
+          "target": [
+            "Targetrplabels_view"
+          ]
+        }
+      ],
+      "targets": {
+        "Targetrplabels_view": {
+          "id": "rplabels_view",
+          "name": "rplabels_view"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "rplabels.view.App",
+      "type": "XML",
+      "id": "App"
+    }
+  }
 }

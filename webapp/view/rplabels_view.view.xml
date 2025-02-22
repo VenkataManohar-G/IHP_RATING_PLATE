@@ -50,7 +50,7 @@
                             <Label id="id_printer_label" text="{i18n>printer}" design="Bold" width="100%" required="true" textAlign="Begin" textDirection="LTR" />
                             <Input id="id_printer" showValueHelp="true"  valueHelpRequest=".onPrinterVH" />
                             <Label id="id_job_label" text="{i18n>job}" design="Bold" width="100%" required="true" textAlign="Begin" textDirection="LTR" />
-                            <Input id="id_job" showValueHelp="true"  valueHelpRequest=".onJobVH" />
+                            <Input id="id_job" value="{jobname}"/>
                     </f:content>
                 </f:SimpleForm>
             </VBox>
@@ -80,16 +80,13 @@
 								<Column id="id_column3" width="auto">
 									<Text id="id_material" text="{i18n>material}"/>
 								</Column>
-                                <Column id="id_column4" hAlign="Right" width="120px">
-									<Text id="id_copy" />
-								</Column>
 						</columns>
                         <items>
 							<ColumnListItem id="id_uploadcolumnlist1" vAlign="Middle" >
 								<cells>
                                     <Input  id="_IDsno"                	   value="{Entries>Id}" />
                                     <Input  id="id_label_add"  		       value="{Entries>Label}" />
-                                    <Input  id="id_material_add"  		   value="{Entries>Material}" showSuggestion="true"
+                                    <Input  id="id_material_add" liveChange="onMaterialliveChange" value="{Entries>Material}" showSuggestion="true"
 			                                     showTableSuggestionValueHelp="false"
 			                                     suggestionRows="{ path: 'Materials>/',
                                                                    templateShareable: true }" showValueHelp="true"  
@@ -104,13 +101,12 @@
                                             </Column>
                                         </suggestionColumns>
                                         <suggestionRows>
-                                            <ColumnListItem id="id_collist_mat">
+                                            <ColumnListItem id="id_collist_mat" busy="true">
                                                 <Label id="id_txt_mat" text="{Materials>Material}" />
                                                 <Label id="id_txt_mattext" text="{Materials>MaterialText}" />
                                             </ColumnListItem>
                                         </suggestionRows> 
                                     </Input>
-                                    <Button id="id_copy_add"   type="Emphasized" icon="sap-icon://copy"></Button>
                                 </cells>
                             </ColumnListItem>
                         </items>
