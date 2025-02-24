@@ -21,7 +21,7 @@
 				        <Toolbar id="TB1">
 					        <Title id="Title1" text=""/>
 					        <ToolbarSpacer id="id_toolspacer" />
-					        <Button id="id_execute" icon="sap-icon://create-entry-time" type="Emphasized"/>
+					        <Button id="id_execute" icon="sap-icon://create-entry-time" press="onExecute" type="Emphasized"/>
 					        <Button id="id_activate" icon="sap-icon://edit" type="Emphasized" />
 				        </Toolbar>
 			        </f:toolbar>
@@ -50,7 +50,7 @@
                             <Label id="id_printer_label" text="{i18n>printer}" design="Bold" width="100%" required="true" textAlign="Begin" textDirection="LTR" />
                             <Input id="id_printer" showValueHelp="true"  valueHelpRequest=".onPrinterVH" />
                             <Label id="id_job_label" text="{i18n>job}" design="Bold" width="100%" required="true" textAlign="Begin" textDirection="LTR" />
-                            <Input id="id_job" value="{jobname}"/>
+                            <Input id="id_job" />
                     </f:content>
                 </f:SimpleForm>
             </VBox>
