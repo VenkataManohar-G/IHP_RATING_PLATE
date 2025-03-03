@@ -21,8 +21,8 @@
 				        <Toolbar id="TB1">
 					        <Title id="Title1" text=""/>
 					        <ToolbarSpacer id="id_toolspacer" />
-					        <Button id="id_execute" icon="sap-icon://create-entry-time" press="onExecute" type="Emphasized"/>
-					        <Button id="id_activate" icon="sap-icon://edit" type="Emphasized" />
+					        <Button id="id_execute" icon="sap-icon://create" press="onExecute" type="Emphasized"/>
+					        <Button id="id_reser" icon="sap-icon://reset" type="Neutral" press="onReset" />
 				        </Toolbar>
 			        </f:toolbar>
                     <f:content>
@@ -74,10 +74,12 @@
 								<Column id="id_column1" visible="false">
 									<Text id="id_srno" text="S.No"/>
 								</Column>
-								<Column id="id_column2" width="auto">
-									<Text id="id_label" text="{i18n>label}"/>
+                                <Column id="id_column2" width="5%" hAlign="Left">
 								</Column>
-								<Column id="id_column3" width="auto">
+								<Column id="id_column3" width="auto" hAlign="Left">
+									<Text id="id_label" textDirection="LTR" textAlign="Left" text="{i18n>label}"/>
+								</Column>
+								<Column id="id_column4" width="auto">
 									<Text id="id_material" text="{i18n>material}"/>
 								</Column>
 						</columns>
@@ -85,7 +87,8 @@
 							<ColumnListItem id="id_uploadcolumnlist1" vAlign="Middle" >
 								<cells>
                                     <Input  id="_IDsno"                	   value="{Entries>Id}" />
-                                    <Input  id="id_label_add"  		       value="{Entries>Label}" />
+                                    <Button textDirection="LTR" iconDensityAware="true" id="id_button_cell" icon="sap-icon://light-mode"  type="{= ${Entries>Status} === 'S' ? 'Success' : 'Negative'}" tooltip="{Entries>Message}" visible="{= ${Entries>Status} !== '' ? true : false}"/>
+                                    <Input  id="id_label_add"  		       value="{Entries>Label}" textDirection="LTR" />
                                     <Input  id="id_material_add" liveChange="onMaterialliveChange" value="{Entries>Material}" showSuggestion="true"
 			                                     showTableSuggestionValueHelp="false"
 			                                     suggestionRows="{ path: 'Materials>/',
