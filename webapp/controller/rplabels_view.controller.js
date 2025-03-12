@@ -752,9 +752,16 @@ sap.ui.define([
                     error: function (xhr, textStatus, errorThrown) {
                         console.log("Error:", xhr);
                         reject({ status: 'E', Message: xhr.responseText });
-                        var sMessage = JSON.parse(xhr.responseText);
+                        try {
+                            var message = JSON.parse(xhr.responseText);   
+                            var sMessage = message.Message; 
+                        } catch (error) {
+                            var message = xhr.responseText;
+                            var sMessage = message
+                        }
+                        
                         if (sMessage) {
-                            var aMessage = sMessage.Message;
+                            var aMessage = sMessage;
                         }
                         materialLogs.push({ Status: 'E', Message: aMessage, Material: Material })
                     }
