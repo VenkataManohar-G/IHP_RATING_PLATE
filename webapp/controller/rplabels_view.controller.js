@@ -433,11 +433,15 @@ sap.ui.define([
                                 var oLoftware = {}, Variables = {};
                                 var urllabel = "/Labels/" + Material.rp001 + ".nlbl";
                                 oLoftware.Variables = [];
-                                oLoftware.FilePath = urllabel;
                                 oLoftware.FileVersion = "";
-                                oLoftware.Quantity = "1";
-                                oLoftware.Printer = oPrinter;
                                 oLoftware.PrinterSettings = "";
+                                if(urllabel){
+                                    Variables.FilePath = urllabel;
+                                }
+                                Variables.Quantity = "1";
+                                if(oPrinter){
+                                    Variables.Printer = oPrinter;
+                                }
                                 if (Material.Material) {
                                     Variables.CATALOG_NUMBER = Material.Material;
                                 }
