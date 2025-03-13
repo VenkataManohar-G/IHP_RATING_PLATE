@@ -38,6 +38,7 @@ sap.ui.define([
         },
         _add_initial_entries: function () {
             var that = this;
+            addDefaultEntries = [];
             for (i = 0; i <= 9; i++) {
                 var addDefaultEntry = {};
                 addDefaultEntry.Id = i;
@@ -396,6 +397,7 @@ sap.ui.define([
             oTable.removeItem(oEvent.getParameter("listItem"));
         },
         onExecute: async function (oEvent) {
+            materialLogs = [];
             var oListData = [], oFilter = [], filterMaterial, filterPlant;
             var RecordTable = this.getView().byId("tableId1");
             var newEntries = RecordTable.getBinding("items");
@@ -787,6 +789,12 @@ sap.ui.define([
             oAddEntryModel.setData(addDefaultEntries);
             that.getView().setModel(oAddEntryModel, "Entries");
             oAddEntryModel.refresh(true);
+        },
+        onExit: function(){
+           this.getView().byId("id_txt_mat").destroy();
+           this.getView().byId("id_txt_mattext").destroy();
+           this.getView().byId("id_collist_mat").destroy();
+           
         }
 
     });

@@ -25,6 +25,20 @@
           "odataVersion": "2.0"
         }
       }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "ratingplates-manage": {
+          "semanticObject": "ratingplates",
+          "action": "manage",
+          "title": "{{ratingplates-manage.flpTitle}}",
+          "subTitle": "{{ratingplates-manage.flpSubtitle}}",
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          }
+        }
+      }
     }
   },
   "sap.ui": {
