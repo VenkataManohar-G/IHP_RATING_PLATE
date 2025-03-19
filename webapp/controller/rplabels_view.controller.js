@@ -24,13 +24,21 @@ sap.ui.define([
     "use strict";
     var addDefaultEntries = [];
     var addEntriesLength = 0, oBusyDialog, oAutoSearchDialog;
-    var oAddEntryModel = new sap.ui.model.json.JSONModel(), omaterialsModel = new sap.ui.model.json.JSONModel(), oallmaterialsModel = new sap.ui.model.json.JSONModel(), ouserModel = new sap.ui.model.json.JSONModel(), materialLogs = [];
-    var i, oMatInput, oExecuteBusyModel;
+    var oAddEntryModel = new sap.ui.model.json.JSONModel(), omaterialsModel = new sap.ui.model.json.JSONModel(), oallmaterialsModel = new sap.ui.model.json.JSONModel(), ouserModel = new sap.ui.model.json.JSONModel(), oprinterModel = new sap.ui.model.json.JSONModel(), materialLogs = [];
+    var i, oMatInput, oExecuteBusyModel, oFieldModel;
     var ValueState = coreLibrary.ValueState;
-    var sUrl = "https://labelcloudapi.onnicelabel.com/Trigger/v1/CloudTrigger/Api-CloudIntegrationDemo-Print";
+    var sUrl, sToken;
+    //= "https://labelcloudapi.onnicelabel.com/Trigger/v1/CloudTrigger/Api-CloudIntegrationDemo-Print"
+    //"https://labelcloudapi.onnicelabel.com/Trigger/v1/CloudTrigger/Api-CloudIntegrationDemo-Print";
     return Controller.extend("rplabels.controller.rplabels_view", {
         onInit() {
+            var that = this;
             this._add_initial_entries();
+
+            oFieldModel = new sap.ui.model.json.JSONModel({
+                bHideColumn: false
+            });
+            that.getView().setModel(oFieldModel, "FieldProperty");
         },
         onBeforeRendering() {
             var oModel = this.getOwnerComponent().getModel();
@@ -59,8 +67,6 @@ sap.ui.define([
                     var that = this;
                     if (aUser.length > 0) {
                         ouserModel.setData(aUser);
-                        //that.getView().setModel(ouserModel,"Userdetails");
-                        //that.getView().bindElement("/Userdetails/0");
                         that.getView().byId("id_job").setValue(aUser[0].jobname);
                         console.log(aUser[0].jobname);
                     } else {
@@ -137,19 +143,6 @@ sap.ui.define([
                 var oselectedData = oselectedSet[0].getProperty("value");
                 var oPlant = this.byId("id_plant");
                 oPlant.setValue(oText);
-                /*   oPlantfilter = new sap.ui.model.Filter("Plant", "EQ", oText);
-                   oFilter.push(oPlantfilter)
-                   let oMaterials = await that._getPlantmaterials(oModel, oFilter);
-                   if (oMaterials) {
-                       oallmaterialsModel.setData(oMaterials);
-                       that.getView().setModel(oallmaterialsModel, "AllMaterials");
-                       oBusyDialog.close();
-                   } else {
-                       oallmaterialsModel.setData(oMaterials);
-                       oallmaterialsModel.refresh();
-                       that.getView().setModel(oallmaterialsModel, "AllMaterials");
-                       oBusyDialog.close();
-                   } */
             }
             this._oVHPlantWithSuggestions.close();
         },
@@ -404,316 +397,369 @@ sap.ui.define([
             var oPlant = this.getView().byId("id_plant").getValue();
             var oPrinter = this.getView().byId("id_printer").getValue();
             var that = this, oModel = this.getView().getModel();
-            oListData = newEntries.oList;
-            oExecuteBusyModel = new sap.m.BusyDialog({
-                title: "Loading Data",
-                text: "Please wait....."
-            });
-            oExecuteBusyModel.open();
-            console.log(oListData);
-            oListData.forEach(function (oItem, Index) {
-                console.log(oItem.Material);
-                if (oItem.Material) {
-                    filterMaterial = new sap.ui.model.Filter({
-                        filters: [
-                            new sap.ui.model.Filter("Material", sap.ui.model.FilterOperator.EQ, oItem.Material)
-                        ],
-                        and: false
-                    });
-                    oFilter.push(filterMaterial);
-                }
-            });
-            filterPlant = new sap.ui.model.Filter("Plant", sap.ui.model.FilterOperator.EQ, oPlant);
-            oFilter.push(filterPlant);
-            console.log(oFilter);
+            var oConfigDataModel = this.getOwnerComponent().getModel('configurationModel');
+            var oConfigData = oConfigDataModel.getData().items;
             try {
-                var oMaterialData = await that._getmaterialDetails(oModel, oFilter);
-                if (oMaterialData) {
-                    for (var Material of oMaterialData) {
-                        try {
-                            if (Material) {
-                                var oLoftware = {}, Variables = {};
-                                var urllabel = "/Labels/" + Material.rp001 + ".nlbl";
-                                oLoftware.Variables = [];
-                                oLoftware.FileVersion = "";
-                                oLoftware.PrinterSettings = "";
-                                if(urllabel){
-                                    Variables.FilePath = urllabel;
-                                }
-                                Variables.Quantity = "1";
-                                if(oPrinter){
-                                    Variables.Printer = oPrinter;
-                                }
-                                if (Material.Material) {
-                                    Variables.CATALOG_NUMBER = Material.Material;
-                                }
-                                if (Material.insepectionMemo) {
-                                    Variables.MODEL_NUMBER = Material.insepectionMemo;
-                                }
-                                if (Material.quantity_GRGI) {
-                                    Variables.GR_SLIPS_QTY = Material.quantity_GRGI;
-                                }
-                                if (Material.labelFrom) {
-                                    Variables.LABEL_FORM = Material.labelFrom;
-                                }
-                                if (Material.labelType) {
-                                    Variables.LABEL_TYPE = Material.labelType;
-                                }
-                                if (Material.materialOld) {
-
-                                }
-                                if (Material.articleNo_EAN_UPC) {
-                                    Variables.UPC_NUMBER = Material.articleNo_EAN_UPC;
-                                }
-                                if (Material.materialGroup) {
-                                    Variables.BRAND_NAME = Material.materialGroup;
-                                }
-                                if (Material.materialDescription) {
-                                    Variables.DESCRIPTION = Material.materialDescription;
-                                }
-                                if (Material.serialNo) {
-                                    Variables.SERIAL_NUMBER = Material.serialNo;
-                                }
-                                if (Material.objectListNo) {
-
-                                }
-                                if (Material.orderNo) {
-                                    Variables.PROD_ORDER = Material.orderNo;
-                                }
-                                if (Material.objectlistCounter) {
-                                    Variables.SEQ_NUM = Material.objectlistCounter;
-                                }
-                                if (Material.objectlisCounterMax) {
-                                    Variables.SEQ_QTY = Material.objectlisCounterMax;
-                                }
-                                if (Material.materialSubstitute) {
-                                    Variables.CUST_PART_NUMBER = Material.materialSubstitute;
-                                }
-                                if (Material.userText) {
-                                    Variables.CUSTOM_TXT = Material.userText;
-                                }
-                                if (Material.location) {
-                                    if (oPlant == "1710") {
-                                        Variables.LOCATION = "Russellville, AL";
-                                    } else if (oPlant == "2910") {
-                                        Variables.LOCATION = "Toronto, ON";
-                                    }
-                                }
-                                if (Material.rp001) {
-                                    Variables.RP001 = Material.rp001;
-                                }
-                                if (Material.rp002) {
-                                    Variables.RP002 = Material.rp002;
-                                }
-                                if (Material.rp003) {
-                                    Variables.RP002 = Material.rp003;
-                                }
-                                if (Material.rp004) {
-                                    Variables.RP004 = Material.rp004;
-                                }
-                                if (Material.rp005) {
-                                    Variables.RP005 = Material.rp005;
-                                }
-                                if (Material.rp006) {
-                                    Variables.RP006 = Material.rp006;
-                                }
-                                if (Material.rp007) {
-                                    Variables.RP007 = Material.rp007;
-                                }
-                                if (Material.rp008) {
-                                    Variables.RP008 = Material.rp008;
-                                }
-                                if (Material.rp009) {
-                                    Variables.RP009 = Material.rp009;
-                                }
-                                if (Material.rp011) {
-                                    Variables.RP011 = Material.rp011;
-                                }
-                                if (Material.rp012) {
-                                    Variables.RP012 = Material.rp012;
-                                }
-                                if (Material.rp013) {
-                                    Variables.RP013 = Material.rp013;
-                                }
-                                if (Material.rp014) {
-                                    Variables.RP014 = Material.rp014;
-                                }
-                                if (Material.rp015) {
-                                    Variables.RP015 = Material.rp015;
-                                }
-                                if (Material.rp016) {
-                                    Variables.RP016 = Material.rp016;
-                                }
-                                if (Material.rp017) {
-                                    Variables.RP017 = Material.rp017;
-                                }
-                                if (Material.rp018) {
-                                    Variables.RP018 = Material.rp018;
-                                }
-                                if (Material.rp019) {
-                                    Variables.RP019 = Material.rp019;
-                                }
-                                if (Material.rp020) {
-                                    Variables.RP020 = Material.rp020;
-                                }
-                                if (Material.rp021) {
-                                    Variables.RP021 = Material.rp021;
-                                }
-                                if (Material.rp022) {
-                                    Variables.RP022 = Material.rp022;
-                                }
-                                if (Material.rp023) {
-                                    Variables.RP023 = Material.rp023;
-                                }
-                                if (Material.rp024) {
-                                    Variables.RP024 = Material.rp024;
-                                }
-                                if (Material.rp025) {
-                                    Variables.RP025 = Material.rp025;
-                                }
-                                if (Material.rp026) {
-                                    Variables.RP026 = Material.rp026;
-                                }
-                                if (Material.rp027) {
-                                    Variables.RP027 = Material.rp027;
-                                }
-                                if (Material.rp028) {
-                                    Variables.RP028 = Material.rp028;
-                                }
-                                if (Material.rp029) {
-                                    Variables.RP029 = Material.rp029;
-                                }
-                                if (Material.rp030) {
-                                    Variables.RP030 = Material.rp030;
-                                }
-                                if (Material.rp031) {
-                                    Variables.RP031 = Material.rp031;
-                                }
-                                if (Material.rp032) {
-                                    Variables.RP032 = Material.rp032;
-                                }
-                                if (Material.rp033) {
-                                    Variables.RP033 = Material.rp033;
-                                }
-                                if (Material.rp034) {
-                                    Variables.RP034 = Material.rp034;
-                                }
-                                if (Material.rp035) {
-                                    Variables.RP035 = Material.rp035;
-                                }
-                                if (Material.rp036) {
-                                    Variables.RP036 = Material.rp036;
-                                }
-                                if (Material.rp037) {
-                                    Variables.RP037 = Material.rp037;
-                                }
-                                if (Material.rp038) {
-                                    Variables.RP038 = Material.rp038;
-                                }
-                                if (Material.rp039) {
-                                    Variables.RP039 = Material.rp039;
-                                }
-                                if (Material.rp040) {
-                                    Variables.RP040 = Material.rp040;
-                                }
-                                if (Material.rp041) {
-                                    Variables.RP041 = Material.rp041;
-                                }
-                                if (Material.rp042) {
-                                    Variables.RP042 = Material.rp042;
-                                }
-                                if (Material.rp043) {
-                                    Variables.RP043 = Material.rp043;
-                                }
-                                if (Material.rp044) {
-                                    Variables.RP044 = Material.rp044;
-                                }
-                                if (Material.rp045) {
-                                    Variables.RP045 = Material.rp045;
-                                }
-                                if (Material.rp046) {
-                                    Variables.RP046 = Material.rp046;
-                                }
-                                if (Material.rp047) {
-                                    Variables.RP047 = Material.rp047;
-                                }
-                                if (Material.rp048) {
-                                    Variables.RP048 = Material.rp048;
-                                }
-                                if (Material.rp049) {
-                                    Variables.RP049 = Material.rp049;
-                                }
-                                if (Material.rp050) {
-                                    Variables.RP050 = Material.rp050;
-                                }
-                                if (Material.rp051) {
-                                    Variables.RP051 = Material.rp051;
-                                }
-                                if (Material.rp052) {
-                                    Variables.RP052 = Material.rp052;
-                                }
-                                if (Material.rp053) {
-                                    Variables.RP053 = Material.rp053;
-                                }
-                                if (Material.rp054) {
-                                    Variables.RP054 = Material.rp054;
-                                }
-                                if (Material.rp055) {
-                                    Variables.RP055 = Material.rp055;
-                                }
-                                if (Material.rp056) {
-                                    Variables.RP056 = Material.rp056;
-                                }
-                                if (Material.rp057) {
-                                    Variables.RP057 = Material.rp057;
-                                }
-                                if (Material.rp058) {
-                                    Variables.RP058 = Material.rp058;
-                                }
-                                if (Material.rp059) {
-                                    Variables.RP059 = Material.rp059;
-                                }
-                                if (Material.rp060) {
-                                    Variables.RP060 = Material.rp060;
-                                }
-                                oLoftware.Variables.push(Variables);
-                                var oLoftwareJson = JSON.stringify(oLoftware);
-                                try {
-                                    var oResult = await that._sendcrlabels(sUrl, oLoftwareJson, Material.Material);
-                                } catch (error) {
-                                    console.log('error logged');
-                                    continue;
-                                }
-
-                            }
-                        } catch (error) {
-                            oExecuteBusyModel.close();
-                            MessageBox.error("No Materials Data found to print labels");
-                        }
-                    };
-                    if (materialLogs) {
-                        var oModel = this.getView().getModel("Entries");
-                        var oData = oModel.getData();
-                        console.log(oData);
-                        for (var i = 0; i < oData.length; i++) {
-                            if (oData[i].Label && oData[i].Material) {
-                                let filteredLogs = materialLogs.filter(function (item) {
-                                    return item.Material === oData[i].Material;
-                                });
-                                oData[i].Status = filteredLogs[0].Status;
-                                oData[i].Message = filteredLogs[0].Message;
-                            }
-                        }
-                        oModel.refresh();
+                if (oConfigData.length > 0) {
+                    let urldetails = oConfigData.filter(function (item) {
+                        return item.fieldname === 'URL';
+                    });
+                    if (urldetails.length > 0) {
+                        sUrl = urldetails[0].value;
                     }
-                    oExecuteBusyModel.close();
-                } else {
-                    oExecuteBusyModel.close();
-                    MessageBox.error("No Materials Data found to print labels");
+                    let tokendetails = oConfigData.filter(function (item) {
+                        return item.fieldname === 'TOKEN';
+                    });
+                    if (tokendetails.length > 0) {
+                        sToken = tokendetails[0].value;
+                    }
                 }
             } catch (error) {
-                MessageBox.warning("No Materials Found!! Please try again");
-                oExecuteBusyModel.close();
+                sToken = '';
+                sUrl = '';
+            }
+
+            if (sUrl && sToken) {
+                oListData = newEntries.oList;
+
+                oExecuteBusyModel = new sap.m.BusyDialog({
+                    title: "Loading Data",
+                    text: "Please wait....."
+                });
+                oExecuteBusyModel.open();
+                console.log(oListData);
+                oListData.forEach(function (oItem, Index) {
+                    console.log(oItem.Material);
+                    if (oItem.Material) {
+                        filterMaterial = new sap.ui.model.Filter({
+                            filters: [
+                                new sap.ui.model.Filter("Material", sap.ui.model.FilterOperator.EQ, oItem.Material)
+                            ],
+                            and: false
+                        });
+                        oFilter.push(filterMaterial);
+                    }
+                });
+                filterPlant = new sap.ui.model.Filter("Plant", sap.ui.model.FilterOperator.EQ, oPlant);
+                oFilter.push(filterPlant);
+                console.log(oFilter);
+                try {
+                    var oMaterialData = await that._getmaterialDetails(oModel, oFilter);
+                    if (oMaterialData) {
+                        var oLoftware = {};
+                        oLoftware.Variables = [];
+                        oLoftware.FileVersion = "";
+                        oLoftware.PrinterSettings = "";
+                        for (var Material of oMaterialData) {
+                            try {
+                                if (Material) {
+                                    var Variables = {};
+                                    //var oLoftware = {}, Variables = {};
+                                    var urllabel = "/Labels/" + Material.rp001 + ".nlbl";
+                                    //oLoftware.Variables = [];
+                                    //oLoftware.FileVersion = "";
+                                    //oLoftware.PrinterSettings = "";
+                                    if (urllabel) {
+                                        Variables.FilePath = urllabel;
+                                    }
+                                    let tabledata = oListData.filter(function (item) {
+                                        return item.Material === Material.Material;
+                                    });
+                                    if (tabledata.length > 0) {
+                                        Variables.Quantity = tabledata[0].Label;
+                                    } else {
+                                        Variables.Quantity = "1";
+                                    }
+                                    if (oPrinter) {
+                                        Variables.Printer = oPrinter;
+                                    }
+                                    if (Material.Material) {
+                                        Variables.CATALOG_NUMBER = Material.Material;
+                                    }
+                                    if (Material.insepectionMemo) {
+                                        Variables.MODEL_NUMBER = Material.insepectionMemo;
+                                    }
+                                    if (Material.quantity_GRGI) {
+                                        Variables.GR_SLIPS_QTY = Material.quantity_GRGI;
+                                    }
+                                    if (Material.labelFrom) {
+                                        Variables.LABEL_FORM = Material.labelFrom;
+                                    }
+                                    if (Material.labelType) {
+                                        Variables.LABEL_TYPE = Material.labelType;
+                                    }
+                                    if (Material.materialOld) {
+
+                                    }
+                                    if (Material.articleNo_EAN_UPC) {
+                                        Variables.UPC_NUMBER = Material.articleNo_EAN_UPC;
+                                    }
+                                    if (Material.materialGroup) {
+                                        Variables.BRAND_NAME = Material.materialGroup;
+                                    }
+                                    if (Material.materialDescription) {
+                                        Variables.DESCRIPTION = Material.materialDescription;
+                                    }
+                                    if (Material.serialNo) {
+                                        Variables.SERIAL_NUMBER = Material.serialNo;
+                                    }
+                                    if (Material.objectListNo) {
+
+                                    }
+                                    if (Material.orderNo) {
+                                        Variables.PROD_ORDER = Material.orderNo;
+                                    }
+                                    if (Material.objectlistCounter) {
+                                        Variables.SEQ_NUM = Material.objectlistCounter;
+                                    }
+                                    if (Material.objectlisCounterMax) {
+                                        Variables.SEQ_QTY = Material.objectlisCounterMax;
+                                    }
+                                    if (Material.materialSubstitute) {
+                                        Variables.CUST_PART_NUMBER = Material.materialSubstitute;
+                                    }
+                                    if (Material.userText) {
+                                        Variables.CUSTOM_TXT = Material.userText;
+                                    }
+                                    if (Material.location) {
+                                        if (oPlant == "1710") {
+                                            Variables.LOCATION = "Russellville, AL";
+                                        } else if (oPlant == "2910") {
+                                            Variables.LOCATION = "Toronto, ON";
+                                        }
+                                    }
+                                    if (Material.rp001) {
+                                        Variables.RP001 = Material.rp001;
+                                    }
+                                    if (Material.rp002) {
+                                        Variables.RP002 = Material.rp002;
+                                    }
+                                    if (Material.rp003) {
+                                        Variables.RP002 = Material.rp003;
+                                    }
+                                    if (Material.rp004) {
+                                        Variables.RP004 = Material.rp004;
+                                    }
+                                    if (Material.rp005) {
+                                        Variables.RP005 = Material.rp005;
+                                    }
+                                    if (Material.rp006) {
+                                        Variables.RP006 = Material.rp006;
+                                    }
+                                    if (Material.rp007) {
+                                        Variables.RP007 = Material.rp007;
+                                    }
+                                    if (Material.rp008) {
+                                        Variables.RP008 = Material.rp008;
+                                    }
+                                    if (Material.rp009) {
+                                        Variables.RP009 = Material.rp009;
+                                    }
+                                    if (Material.rp011) {
+                                        Variables.RP011 = Material.rp011;
+                                    }
+                                    if (Material.rp012) {
+                                        Variables.RP012 = Material.rp012;
+                                    }
+                                    if (Material.rp013) {
+                                        Variables.RP013 = Material.rp013;
+                                    }
+                                    if (Material.rp014) {
+                                        Variables.RP014 = Material.rp014;
+                                    }
+                                    if (Material.rp015) {
+                                        Variables.RP015 = Material.rp015;
+                                    }
+                                    if (Material.rp016) {
+                                        Variables.RP016 = Material.rp016;
+                                    }
+                                    if (Material.rp017) {
+                                        Variables.RP017 = Material.rp017;
+                                    }
+                                    if (Material.rp018) {
+                                        Variables.RP018 = Material.rp018;
+                                    }
+                                    if (Material.rp019) {
+                                        Variables.RP019 = Material.rp019;
+                                    }
+                                    if (Material.rp020) {
+                                        Variables.RP020 = Material.rp020;
+                                    }
+                                    if (Material.rp021) {
+                                        Variables.RP021 = Material.rp021;
+                                    }
+                                    if (Material.rp022) {
+                                        Variables.RP022 = Material.rp022;
+                                    }
+                                    if (Material.rp023) {
+                                        Variables.RP023 = Material.rp023;
+                                    }
+                                    if (Material.rp024) {
+                                        Variables.RP024 = Material.rp024;
+                                    }
+                                    if (Material.rp025) {
+                                        Variables.RP025 = Material.rp025;
+                                    }
+                                    if (Material.rp026) {
+                                        Variables.RP026 = Material.rp026;
+                                    }
+                                    if (Material.rp027) {
+                                        Variables.RP027 = Material.rp027;
+                                    }
+                                    if (Material.rp028) {
+                                        Variables.RP028 = Material.rp028;
+                                    }
+                                    if (Material.rp029) {
+                                        Variables.RP029 = Material.rp029;
+                                    }
+                                    if (Material.rp030) {
+                                        Variables.RP030 = Material.rp030;
+                                    }
+                                    if (Material.rp031) {
+                                        Variables.RP031 = Material.rp031;
+                                    }
+                                    if (Material.rp032) {
+                                        Variables.RP032 = Material.rp032;
+                                    }
+                                    if (Material.rp033) {
+                                        Variables.RP033 = Material.rp033;
+                                    }
+                                    if (Material.rp034) {
+                                        Variables.RP034 = Material.rp034;
+                                    }
+                                    if (Material.rp035) {
+                                        Variables.RP035 = Material.rp035;
+                                    }
+                                    if (Material.rp036) {
+                                        Variables.RP036 = Material.rp036;
+                                    }
+                                    if (Material.rp037) {
+                                        Variables.RP037 = Material.rp037;
+                                    }
+                                    if (Material.rp038) {
+                                        Variables.RP038 = Material.rp038;
+                                    }
+                                    if (Material.rp039) {
+                                        Variables.RP039 = Material.rp039;
+                                    }
+                                    if (Material.rp040) {
+                                        Variables.RP040 = Material.rp040;
+                                    }
+                                    if (Material.rp041) {
+                                        Variables.RP041 = Material.rp041;
+                                    }
+                                    if (Material.rp042) {
+                                        Variables.RP042 = Material.rp042;
+                                    }
+                                    if (Material.rp043) {
+                                        Variables.RP043 = Material.rp043;
+                                    }
+                                    if (Material.rp044) {
+                                        Variables.RP044 = Material.rp044;
+                                    }
+                                    if (Material.rp045) {
+                                        Variables.RP045 = Material.rp045;
+                                    }
+                                    if (Material.rp046) {
+                                        Variables.RP046 = Material.rp046;
+                                    }
+                                    if (Material.rp047) {
+                                        Variables.RP047 = Material.rp047;
+                                    }
+                                    if (Material.rp048) {
+                                        Variables.RP048 = Material.rp048;
+                                    }
+                                    if (Material.rp049) {
+                                        Variables.RP049 = Material.rp049;
+                                    }
+                                    if (Material.rp050) {
+                                        Variables.RP050 = Material.rp050;
+                                    }
+                                    if (Material.rp051) {
+                                        Variables.RP051 = Material.rp051;
+                                    }
+                                    if (Material.rp052) {
+                                        Variables.RP052 = Material.rp052;
+                                    }
+                                    if (Material.rp053) {
+                                        Variables.RP053 = Material.rp053;
+                                    }
+                                    if (Material.rp054) {
+                                        Variables.RP054 = Material.rp054;
+                                    }
+                                    if (Material.rp055) {
+                                        Variables.RP055 = Material.rp055;
+                                    }
+                                    if (Material.rp056) {
+                                        Variables.RP056 = Material.rp056;
+                                    }
+                                    if (Material.rp057) {
+                                        Variables.RP057 = Material.rp057;
+                                    }
+                                    if (Material.rp058) {
+                                        Variables.RP058 = Material.rp058;
+                                    }
+                                    if (Material.rp059) {
+                                        Variables.RP059 = Material.rp059;
+                                    }
+                                    if (Material.rp060) {
+                                        Variables.RP060 = Material.rp060;
+                                    }
+                                    oLoftware.Variables.push(Variables);
+
+                                }
+                            } catch (error) {
+                                oExecuteBusyModel.close();
+                                MessageBox.error("No Materials Data found to print labels");
+                            }
+                        };
+                        if (oLoftware.Variables.length > 0) {
+                            var oLoftwareJson = JSON.stringify(oLoftware);
+                            try {
+                                var oResult = await that._sendcrlabels(sUrl, oLoftwareJson);
+                            } catch (error) {
+                            }
+                            if (materialLogs) {
+                                var oModel = this.getView().getModel("Entries");
+                                var oData = oModel.getData();
+                                console.log(oData);
+                                for (var i = 0; i < oData.length; i++) {
+                                    if (oData[i].Label && oData[i].Material) {
+                                        let existingMaterialData = oMaterialData.filter(function (item) {
+                                            return item.Material === oData[i].Material;
+                                        });
+                                        console.log(existingMaterialData);
+                                        if (existingMaterialData.length > 0) {
+                                            oData[i].Status = materialLogs[0].Status;
+                                            oData[i].Message = materialLogs[0].Message;
+                                        } else {
+                                            oData[i].Status = 'E';
+                                            oData[i].Message = 'Material Characteristics Not Found';
+                                        }
+
+                                    }
+                                }
+                                oModel.refresh();
+                                oFieldModel = this.getView().getModel("FieldProperty");
+                                oFieldModel.setProperty("/bHideColumn", true);
+                                oFieldModel.refresh();
+                            }
+                            oExecuteBusyModel.close();
+                        } else {
+                            MessageBox.error("No Materials Characteristics found to print labels");
+                            oExecuteBusyModel.close();
+                        }
+
+                    } else {
+                        oExecuteBusyModel.close();
+                        MessageBox.error("No Materials Data found to print labels");
+                    }
+                } catch (error) {
+                    MessageBox.warning("No Materials Characteristics Found!! Please try again");
+                    oExecuteBusyModel.close();
+                }
+            }else{
+                MessageBox.warning("No Loftware Configurations maintaned!! Please Configure");
             }
         },
         _getmaterialDetails: async function (oModel, oFilter) {
@@ -735,7 +781,7 @@ sap.ui.define([
                 });
             });
         },
-        _sendcrlabels: async function (sUrl, oLoftwareJson, Material) {
+        _sendcrlabels: async function (sUrl, oLoftwareJson) {
             return new Promise((resolve, reject) => {
                 $.ajax({
                     type: "POST",
@@ -745,7 +791,7 @@ sap.ui.define([
                     data: oLoftwareJson,
                     crossDomain: true,
                     headers: {
-                        "Ocp-Apim-Subscription-Key": "d79514cfdffe4c229ac15b52fbf9adc8"
+                        "Ocp-Apim-Subscription-Key": sToken
                     },
                     success: function (response) {
                         console.log("Success:", response);
@@ -753,23 +799,23 @@ sap.ui.define([
                         if (response) {
                             var sResponse = response.Response;
                         }
-                        materialLogs.push({ Status: 'S', Message: sResponse, Material: Material })
+                        materialLogs.push({ Status: 'S', Message: sResponse })
                     },
                     error: function (xhr, textStatus, errorThrown) {
                         console.log("Error:", xhr);
                         reject({ status: 'E', Message: xhr.responseText });
                         try {
-                            var message = JSON.parse(xhr.responseText);   
-                            var sMessage = message.Message; 
+                            var message = JSON.parse(xhr.responseText);
+                            var sMessage = message.Message;
                         } catch (error) {
                             var message = xhr.responseText;
                             var sMessage = message
                         }
-                        
+
                         if (sMessage) {
                             var aMessage = sMessage;
                         }
-                        materialLogs.push({ Status: 'E', Message: aMessage, Material: Material })
+                        materialLogs.push({ Status: 'E', Message: aMessage })
                     }
                 });
             })
@@ -789,12 +835,106 @@ sap.ui.define([
             oAddEntryModel.setData(addDefaultEntries);
             that.getView().setModel(oAddEntryModel, "Entries");
             oAddEntryModel.refresh(true);
+
+            oFieldModel = this.getView().getModel("FieldProperty");
+            oFieldModel.setProperty("/bHideColumn", false);
+            oFieldModel.refresh();
         },
-        onExit: function(){
-           this.getView().byId("id_txt_mat").destroy();
-           this.getView().byId("id_txt_mattext").destroy();
-           this.getView().byId("id_collist_mat").destroy();
-           
+        onExit: function () {
+            this.getView().byId("id_txt_mat").destroy();
+            this.getView().byId("id_txt_mattext").destroy();
+            this.getView().byId("id_collist_mat").destroy();
+
+            oFieldModel = this.getView().getModel("FieldProperty");
+            oFieldModel.setProperty("/bHideColumn", false);
+            oFieldModel.refresh();
+
+        },
+        _getPlantprinter: function (oModel, oFilter) {
+            return new Promise((resolve, reject) => {
+                oModel.read("/Printers", {
+                    filters: oFilter,
+                    urlParameters: { "$top": 500 },
+                    success: function (oData) {
+                        var aPrinters = oData.results;
+                        if (aPrinters.length > 0) {
+                            resolve(aPrinters);
+                        } else {
+                            resolve();
+                        }
+                    },
+                    error: function (oError) {
+                        reject(oError);
+                    }
+                });
+            });
+        },
+        onPrinterVH: async function (oEvent) {
+            var sInputValue = oEvent.getSource().getValue(),
+                oView = this.getView(),
+                oPlantfilter,
+                oModel = this.getView().getModel(),
+                that = this;
+            let oPrinters = await that._getPlantprinter(oModel);
+            if (oPrinters) {
+                oprinterModel.setData(oPrinters);
+                oprinterModel.refresh();
+                that.getView().setModel(oprinterModel, "Printers");
+            } else {
+                oprinterModel.setData(oMaterials);
+                oprinterModel.refresh();
+                that.getView().setModel(oprinterModel, "Printers");
+            }
+            if (!this._pValueHelpDialogPrinter) {
+                this._pValueHelpDialogPrinter = Fragment.load({
+                    id: oView.getId(),
+                    name: "rplabels.view.PrintersVH",
+                    controller: this
+                }).then(function (oDialog) {
+                    oView.addDependent(oDialog);
+                    return oDialog;
+                });
+            }
+            this._pValueHelpDialogPrinter.then(function (oDialog) {
+                // Create a filter for the binding
+                if (sInputValue) {
+                    oDialog.open(sInputValue);
+                } else {
+                    oDialog.open();
+                }
+            });
+
+        },
+        onValueHelpprinterSearch: async function (oEvent) {
+            var oFilter = [], oPrinterfilter,
+                oModel = this.getView().getModel(),
+                sValue = oEvent.getParameter("value"),
+                that = this;
+            if (sValue) {
+                oPrinterfilter = new sap.ui.model.Filter("Printer", sap.ui.model.FilterOperator.Contains, sValue);
+                oFilter.push(oPrinterfilter);
+            }
+            let oPrinter = await that._getPlantprinter(oModel, oFilter);
+            if (oPrinter) {
+                oprinterModel.setData(oPrinter);
+                oprinterModel.refresh();
+                that.getView().setModel(oprinterModel, "Printers");
+            } else {
+                oprinterModel.setData(oPrinter);
+                oprinterModel.refresh();
+                that.getView().setModel(oprinterModel, "Printers");
+            }
+
+        },
+        onValueHelpprinterClose: function (oEvent) {
+            var oSelectedItem = oEvent.getParameter("selectedItem");
+            var sPrinter = this.getView().byId('id_printer');
+            if (oSelectedItem) {
+                var oValue = oSelectedItem.getTitle();
+                sPrinter.setValue(oValue);
+
+            }
+
         }
 
     });

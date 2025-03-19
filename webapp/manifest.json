@@ -93,6 +93,11 @@
         "dataSource": "ZSRVB_LOFTWARE_SERVICES",
         "preload": true,
         "settings": {}
+      },
+      "configurationModel": {
+        "type": "sap.ui.model.json.JSONModel",
+        "settings": {},
+        "preload": false
       }
     },
     "resources": {

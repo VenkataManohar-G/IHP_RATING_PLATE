@@ -35,6 +35,20 @@
     </edmx:Reference>
     <edmx:DataServices m:DataServiceVersion="2.0">
         <Schema Namespace="cds_zsrvd_loftware_services" xml:lang="en" sap:schema-version="1" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+            <EntityType Name="PrintersType" sap:label="Loftware All Printers" sap:content-version="1">
+                <Key>
+                    <PropertyRef Name="SapUuid"/>
+                    <PropertyRef Name="Printer"/>
+                </Key>
+                <Property Name="SapUuid" Type="Edm.Guid" Nullable="false" sap:label="UUID" sap:quickinfo="16 Byte UUID in 16 Bytes (Raw Format)"/>
+                <Property Name="Printer" Type="Edm.String" Nullable="false" MaxLength="60"/>
+                <Property Name="PrinterDesc" Type="Edm.String" MaxLength="150"/>
+                <Property Name="CreatedBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Created By" sap:quickinfo="Created By User"/>
+                <Property Name="CreatedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Created On" sap:quickinfo="Creation Date Time"/>
+                <Property Name="LocalLastChangedBy" Type="Edm.String" MaxLength="12" sap:display-format="UpperCase" sap:label="Changed By" sap:quickinfo="Local Instance Last Changed By User"/>
+                <Property Name="LocalLastChangedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Changed On" sap:quickinfo="Local Instance Last Change Date Time"/>
+                <Property Name="LastChangedAt" Type="Edm.DateTimeOffset" Precision="7" sap:label="Changed On" sap:quickinfo="Last Change Date Time"/>
+            </EntityType>
             <EntityType Name="CurrentUserType" sap:label="Current User" sap:content-version="1">
                 <Key>
                     <PropertyRef Name="jobname"/>
@@ -57,6 +71,7 @@
                     <PropertyRef Name="Material"/>
                 </Key>
                 <Property Name="Material" Type="Edm.String" Nullable="false" MaxLength="18"/>
+                <Property Name="Plant" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Plant"/>
                 <Property Name="insepectionMemo" Type="Edm.String" MaxLength="18"/>
                 <Property Name="quantity" Type="Edm.String" MaxLength="3" sap:semantics="unit-of-measure"/>
                 <Property Name="quantity_GRGI" Type="Edm.Decimal" Precision="13" Scale="3" sap:unit="quantity"/>
@@ -67,9 +82,10 @@
                 <Property Name="materialGroup" Type="Edm.String" MaxLength="20"/>
                 <Property Name="materialDescription" Type="Edm.String" MaxLength="40"/>
                 <Property Name="serialNo" Type="Edm.String" MaxLength="18"/>
+                <Property Name="objectListNo" Type="Edm.Int32"/>
                 <Property Name="orderNo" Type="Edm.String" MaxLength="12"/>
-                <Property Name="objectlistCounter" Type="Edm.Byte"/>
-                <Property Name="objectlisCounterMax" Type="Edm.Byte"/>
+                <Property Name="objectlistCounter" Type="Edm.Int32"/>
+                <Property Name="objectlisCounterMax" Type="Edm.Int32"/>
                 <Property Name="materialSubstitute" Type="Edm.String" MaxLength="18"/>
                 <Property Name="userText" Type="Edm.String" MaxLength="25"/>
                 <Property Name="location" Type="Edm.String" MaxLength="60"/>
@@ -155,6 +171,7 @@
                 <Property Name="BusinessPlace" Type="Edm.String" MaxLength="4" sap:display-format="UpperCase" sap:label="Business Place"/>
             </EntityType>
             <EntityContainer Name="cds_zsrvd_loftware_services_Entities" m:IsDefaultEntityContainer="true" sap:message-scope-supported="true" sap:supported-formats="atom json xlsx">
+                <EntitySet Name="Printers" EntityType="cds_zsrvd_loftware_services.PrintersType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
                 <EntitySet Name="CurrentUser" EntityType="cds_zsrvd_loftware_services.CurrentUserType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
                 <EntitySet Name="Materials" EntityType="cds_zsrvd_loftware_services.MaterialsType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
                 <EntitySet Name="MaterialsData" EntityType="cds_zsrvd_loftware_services.MaterialsDataType" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:content-version="1"/>
@@ -216,6 +233,23 @@
                 </Annotation>
             </Annotations>
             <Annotations Target="cds_zsrvd_loftware_services.cds_zsrvd_loftware_services_Entities/Plants" xmlns="http://docs.oasis-open.org/odata/ns/edm">
+                <Annotation Term="Capabilities.DeleteRestrictions">
+                    <Record>
+                        <PropertyValue Property="Deletable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.InsertRestrictions">
+                    <Record>
+                        <PropertyValue Property="Insertable" Bool="false"/>
+                    </Record>
+                </Annotation>
+                <Annotation Term="Capabilities.UpdateRestrictions">
+                    <Record>
+                        <PropertyValue Property="Updatable" Bool="false"/>
+                    </Record>
+                </Annotation>
+            </Annotations>
+            <Annotations Target="cds_zsrvd_loftware_services.cds_zsrvd_loftware_services_Entities/Printers" xmlns="http://docs.oasis-open.org/odata/ns/edm">
                 <Annotation Term="Capabilities.DeleteRestrictions">
                     <Record>
                         <PropertyValue Property="Deletable" Bool="false"/>

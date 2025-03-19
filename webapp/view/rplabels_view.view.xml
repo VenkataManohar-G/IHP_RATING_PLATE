@@ -2,7 +2,7 @@
     xmlns:mvc="sap.ui.core.mvc"
     xmlns="sap.m" xmlns:f="sap.ui.layout.form"
     xmlns:core="sap.ui.core" xmlns:l="sap.ui.layout">
-    <Page id="page" title="{i18n>title}">
+    <Page id="page" showHeader="false">
         <content>
             <VBox id="id_vbox" class="sapUiSmallMargin">
                 <f:SimpleForm id="id_simpleform" editable="true" layout="ColumnLayout" title="{i18n>titleform}" labelSpanXL="3"
@@ -21,8 +21,8 @@
 				        <Toolbar id="TB1">
 					        <Title id="Title1" text=""/>
 					        <ToolbarSpacer id="id_toolspacer" />
-					        <Button id="id_execute" icon="sap-icon://create" press="onExecute" type="Emphasized"/>
-					        <Button id="id_reser" icon="sap-icon://reset" type="Neutral" press="onReset" />
+					        <Button id="id_execute" icon="sap-icon://print" press="onExecute" type="Emphasized" tooltip="Print Rating Plate Labels"/>
+					        <Button id="id_reser" icon="sap-icon://reset" type="Neutral" press="onReset" tooltip="clear" />
 				        </Toolbar>
 			        </f:toolbar>
                     <f:content>
@@ -48,7 +48,23 @@
                             </suggestionRows>                     
                             </Input>
                             <Label id="id_printer_label" text="{i18n>printer}" design="Bold" width="100%" required="true" textAlign="Begin" textDirection="LTR" />
-                            <Input id="id_printer" showValueHelp="true"  valueHelpRequest=".onPrinterVH" />
+                            <Input id="id_printer" showSuggestion="true" suggestionRows="{/Printers}" showValueHelp="true"  valueHelpRequest=".onPrinterVH">
+                            <suggestionColumns>
+                                <Column id="id_col_printer">
+                                    <Label id="id_label_print" text="Printer Name" />
+                                </Column>
+                                <Column id="id_col_printertext"
+                                    hAlign="Center">
+                                    <Label id="id_label_printertxt" text="Printer Description" />
+                                </Column>
+                            </suggestionColumns>
+                            <suggestionRows>
+                                <ColumnListItem id="id_collist_print">
+                                    <Label id="id_txt_print" text="{Printer}" />
+                                    <Label id="id_txt_printtext" text="{PrinterDesc}" />
+                                </ColumnListItem>
+                            </suggestionRows>   
+                            </Input>
                             <Label id="id_job_label" text="{i18n>job}" design="Bold" width="100%" required="true" textAlign="Begin" textDirection="LTR" />
                             <Input id="id_job" />
                     </f:content>
@@ -74,7 +90,7 @@
 								<Column id="id_column1" visible="false">
 									<Text id="id_srno" text="S.No"/>
 								</Column>
-                                <Column id="id_column2" width="5%" hAlign="Left">
+                                <Column id="id_column2" width="5%" hAlign="Left" visible="{FieldProperty>/bHideColumn}" >
 								</Column>
 								<Column id="id_column3" width="auto" hAlign="Left">
 									<Text id="id_label" textDirection="LTR" textAlign="Left" text="{i18n>label}"/>
