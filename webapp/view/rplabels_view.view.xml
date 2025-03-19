@@ -66,7 +66,7 @@
                             </suggestionRows>   
                             </Input>
                             <Label id="id_job_label" text="{i18n>job}" design="Bold" width="100%" required="true" textAlign="Begin" textDirection="LTR" />
-                            <Input id="id_job" />
+                            <Input id="id_job" editable="false"/>
                     </f:content>
                 </f:SimpleForm>
             </VBox>
