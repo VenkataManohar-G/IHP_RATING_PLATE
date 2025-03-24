@@ -881,7 +881,7 @@ sap.ui.define([
                 oprinterModel.refresh();
                 that.getView().setModel(oprinterModel, "Printers");
             } else {
-                oprinterModel.setData(oMaterials);
+                oprinterModel.setData(oPrinters);
                 oprinterModel.refresh();
                 that.getView().setModel(oprinterModel, "Printers");
             }
