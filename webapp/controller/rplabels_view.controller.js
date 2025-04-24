@@ -399,6 +399,8 @@ sap.ui.define([
             var that = this, oModel = this.getView().getModel();
             var oConfigDataModel = this.getOwnerComponent().getModel('configurationModel');
             var oConfigData = oConfigDataModel.getData().items;
+            var oFieldDataModel = this.getOwnerComponent().getModel('fieldMappingModel');
+            var oFieldData = oFieldDataModel.getData().items;
             try {
                 if (oConfigData.length > 0) {
                     let urldetails = oConfigData.filter(function (item) {
@@ -418,7 +420,6 @@ sap.ui.define([
                 sToken = '';
                 sUrl = '';
             }
-
             if (sUrl && sToken) {
                 oListData = newEntries.oList;
 
@@ -454,11 +455,7 @@ sap.ui.define([
                             try {
                                 if (Material) {
                                     var Variables = {};
-                                    //var oLoftware = {}, Variables = {};
-                                    var urllabel = "/Labels/" + Material.rp001 + ".nlbl";
-                                    //oLoftware.Variables = [];
-                                    //oLoftware.FileVersion = "";
-                                    //oLoftware.PrinterSettings = "";
+                                    var urllabel = Material.labelName;
                                     if (urllabel) {
                                         Variables.FilePath = urllabel;
                                     }
@@ -474,236 +471,880 @@ sap.ui.define([
                                         Variables.Printer = oPrinter;
                                     }
                                     if (Material.Material) {
-                                        Variables.CATALOG_NUMBER = Material.Material;
+                                        var loftwarematerialfield;
+                                        try {
+                                            let materialfield = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'Material';
+                                            });
+                                            loftwarematerialfield = materialfield[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarematerialfield = '';
+                                        }
+                                        if (loftwarematerialfield) { Variables[loftwarematerialfield] = Material.Material; }
                                     }
                                     if (Material.insepectionMemo) {
-                                        Variables.MODEL_NUMBER = Material.insepectionMemo;
+                                        var loftwareMemofield;
+                                        try {
+                                            let Memofield = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'insepectionMemo';
+                                            });
+                                            loftwareMemofield = Memofield[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwareMemofield = '';
+                                        }
+                                        if (loftwareMemofield) { Variables[loftwareMemofield] = Material.insepectionMemo; }
                                     }
                                     if (Material.quantity_GRGI) {
-                                        Variables.GR_SLIPS_QTY = Material.quantity_GRGI;
+                                        var loftwareGRquant;
+                                        try {
+                                            let GRQuantfield = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'quantity_GRGI';
+                                            });
+                                            loftwareGRquant = GRQuantfield[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwareGRquant = '';
+                                        }
+                                        if (loftwareGRquant) { Variables[loftwareGRquant] = Material.quantity_GRGI; }
                                     }
                                     if (Material.labelFrom) {
-                                        Variables.LABEL_FORM = Material.labelFrom;
+                                        var loftwarelabelFrom;
+                                        try {
+                                            let LabelFromfield = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'labelFrom';
+                                            });
+                                            loftwarelabelFrom = LabelFromfield[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarelabelFrom = '';
+                                        }
+                                        if (loftwarelabelFrom) { Variables[loftwarelabelFrom] = Material.labelFrom; }
                                     }
                                     if (Material.labelType) {
-                                        Variables.LABEL_TYPE = Material.labelType;
+                                        var loftwarelabelType;
+                                        try {
+                                            let LabelTypefield = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'labelType';
+                                            });
+                                            loftwarelabelType = LabelTypefield[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarelabelType = '';
+                                        }
+                                        if (loftwarelabelType) { Variables[loftwarelabelType] = Material.labelType; }
                                     }
                                     if (Material.materialOld) {
-
+                                        var loftwarematerialOld;
+                                        try {
+                                            let materialOldfield = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'materialOld';
+                                            });
+                                            loftwarematerialOld = materialOldfield[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarematerialOld = '';
+                                        }
+                                        if (loftwarematerialOld) { Variables[loftwarematerialOld] = Material.materialOld; }
                                     }
                                     if (Material.articleNo_EAN_UPC) {
-                                        Variables.UPC_NUMBER = Material.articleNo_EAN_UPC;
+                                        var loftwarearticleNo;
+                                        try {
+                                            let articleNofield = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'articleNo_EAN_UPC';
+                                            });
+                                            loftwarearticleNo = articleNofield[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarearticleNo = '';
+                                        }
+                                        if (loftwarearticleNo) { Variables[loftwarearticleNo] = Material.articleNo_EAN_UPC; }
                                     }
                                     if (Material.materialGroup) {
-                                        Variables.BRAND_NAME = Material.materialGroup;
+                                        var loftwarematerialGroup;
+                                        try {
+                                            let materialGroupfield = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'materialGroup';
+                                            });
+                                            loftwarematerialGroup = materialGroupfield[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarematerialGroup = '';
+                                        }
+                                        if (loftwarematerialGroup) { Variables[loftwarematerialGroup] = Material.materialGroup; }
                                     }
                                     if (Material.materialDescription) {
-                                        Variables.DESCRIPTION = Material.materialDescription;
+                                        var loftwarematerialDescription;
+                                        try {
+                                            let materialDescfield = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'materialDescription';
+                                            });
+                                            loftwarematerialDescription = materialDescfield[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarematerialDescription = '';
+                                        }
+                                        if (loftwarematerialDescription) { Variables[loftwarematerialDescription] = Material.materialDescription; }
                                     }
                                     if (Material.serialNo) {
-                                        Variables.SERIAL_NUMBER = Material.serialNo;
-                                    }
-                                    if (Material.objectListNo) {
-
-                                    }
-                                    if (Material.orderNo) {
-                                        Variables.PROD_ORDER = Material.orderNo;
-                                    }
-                                    if (Material.objectlistCounter) {
-                                        Variables.SEQ_NUM = Material.objectlistCounter;
-                                    }
-                                    if (Material.objectlisCounterMax) {
-                                        Variables.SEQ_QTY = Material.objectlisCounterMax;
+                                        var loftwareserialNo;
+                                        try {
+                                            let serialNofield = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'serialNo';
+                                            });
+                                            loftwareserialNo = serialNofield[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwareserialNo = '';
+                                        }
+                                        if (loftwareserialNo) { Variables[loftwareserialNo] = Material.serialNo; }
                                     }
                                     if (Material.materialSubstitute) {
-                                        Variables.CUST_PART_NUMBER = Material.materialSubstitute;
+                                        var loftwarematerialSubstitute;
+                                        try {
+                                            let loftwarematerialSubfield = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'materialSubstitute';
+                                            });
+                                            loftwarematerialSubstitute = loftwarematerialSubfield[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarematerialSubstitute = '';
+                                        }
+                                        if (loftwarematerialSubstitute) { Variables[loftwarematerialSubstitute] = Material.materialSubstitute; }
                                     }
                                     if (Material.userText) {
-                                        Variables.CUSTOM_TXT = Material.userText;
+                                        var loftwaretext;
+                                        try {
+                                            let loftwaretextfield = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'userText';
+                                            });
+                                            loftwaretext = loftwaretextfield[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwaretext = '';
+                                        }
+                                        if (loftwaretext) { Variables[loftwaretext] = Material.userText; }
                                     }
                                     if (Material.location) {
-                                        if (oPlant == "1710") {
-                                            Variables.LOCATION = "Russellville, AL";
-                                        } else if (oPlant == "2910") {
-                                            Variables.LOCATION = "Toronto, ON";
+                                        var loftwarelocation;
+                                        try {
+                                            let loftwarelocationfield = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'location';
+                                            });
+                                            loftwarelocation = loftwarelocationfield[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarelocation = '';
                                         }
+                                        if (loftwarelocation) { Variables[loftwarelocation] = Material.location; } 
                                     }
                                     if (Material.rp001) {
-                                        Variables.RP001 = Material.rp001;
+                                        var loftwarerp001;
+                                        try {
+                                            let rp001field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP001';
+                                            });
+                                            loftwarerp001 = rp001field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp001 = '';
+                                        }
+                                        if (loftwarerp001) { Variables[loftwarerp001] = Material.rp001; }
                                     }
                                     if (Material.rp002) {
-                                        Variables.RP002 = Material.rp002;
+                                        var loftwarerp002;
+                                        try {
+                                            let rp002field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP002';
+                                            });
+                                            loftwarerp002 = rp002field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp002 = '';
+                                        }
+                                        if (loftwarerp002) { Variables[loftwarerp002] = Material.rp002; }
                                     }
                                     if (Material.rp003) {
-                                        Variables.RP002 = Material.rp003;
+                                        var loftwarerp003;
+                                        try {
+                                            let rp003field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP003';
+                                            });
+                                            loftwarerp003 = rp003field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp003 = '';
+                                        }
+                                        if (loftwarerp003) { Variables[loftwarerp003] = Material.rp003; }
                                     }
                                     if (Material.rp004) {
-                                        Variables.RP004 = Material.rp004;
+                                        var loftwarerp004;
+                                        try {
+                                            let rp004field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP004';
+                                            });
+                                            loftwarerp004 = rp004field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp004 = '';
+                                        }
+                                        if (loftwarerp004) { Variables[loftwarerp004] = Material.rp004; }
                                     }
                                     if (Material.rp005) {
-                                        Variables.RP005 = Material.rp005;
+                                        var loftwarerp005;
+                                        try {
+                                            let rp005field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP005';
+                                            });
+                                            loftwarerp005 = rp005field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp005 = '';
+                                        }
+                                        if (loftwarerp005) { Variables[loftwarerp005] = Material.rp005; }
                                     }
                                     if (Material.rp006) {
-                                        Variables.RP006 = Material.rp006;
+                                        var loftwarerp006;
+                                        try {
+                                            let rp006field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP006';
+                                            });
+                                            loftwarerp006 = rp006field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp006 = '';
+                                        }
+                                        if (loftwarerp006) { Variables[loftwarerp006] = Material.rp006; }
                                     }
                                     if (Material.rp007) {
-                                        Variables.RP007 = Material.rp007;
+                                        var loftwarerp007;
+                                        try {
+                                            let rp007field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP007';
+                                            });
+                                            loftwarerp007 = rp007field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp007 = '';
+                                        }
+                                        if (loftwarerp007) { Variables[loftwarerp007] = Material.rp007; }
                                     }
                                     if (Material.rp008) {
-                                        Variables.RP008 = Material.rp008;
+                                        var loftwarerp008;
+                                        try {
+                                            let rp008field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP008';
+                                            });
+                                            loftwarerp008 = rp008field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp008 = '';
+                                        }
+                                        if (loftwarerp008) { Variables[loftwarerp008] = Material.rp008; }
                                     }
                                     if (Material.rp009) {
-                                        Variables.RP009 = Material.rp009;
+                                        var loftwarerp009;
+                                        try {
+                                            let rp009field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP009';
+                                            });
+                                            loftwarerp009 = rp009field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp009 = '';
+                                        }
+                                        if (loftwarerp009) { Variables[loftwarerp009] = Material.rp009; }
+                                    }
+                                    if (Material.rp010) {
+                                        var loftwarerp010;
+                                        try {
+                                            let rp010field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP010';
+                                            });
+                                            loftwarerp010 = rp010field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp010 = '';
+                                        }
+                                        if (loftwarerp010) { Variables[loftwarerp010] = Material.rp010; }
                                     }
                                     if (Material.rp011) {
-                                        Variables.RP011 = Material.rp011;
+                                        var loftwarerp011;
+                                        try {
+                                            let rp011field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP011';
+                                            });
+                                            loftwarerp011 = rp011field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp011 = '';
+                                        }
+                                        if (loftwarerp011) { Variables[loftwarerp011] = Material.rp011; }
                                     }
                                     if (Material.rp012) {
-                                        Variables.RP012 = Material.rp012;
+                                        var loftwarerp012;
+                                        try {
+                                            let rp012field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP012';
+                                            });
+                                            loftwarerp012 = rp012field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp012 = '';
+                                        }
+                                        if (loftwarerp012) { Variables[loftwarerp012] = Material.rp012; }
                                     }
                                     if (Material.rp013) {
-                                        Variables.RP013 = Material.rp013;
+                                        var loftwarerp013;
+                                        try {
+                                            let rp013field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP013';
+                                            });
+                                            loftwarerp013 = rp013field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp013 = '';
+                                        }
+                                        if (loftwarerp013) { Variables[loftwarerp013] = Material.rp013; }
                                     }
                                     if (Material.rp014) {
-                                        Variables.RP014 = Material.rp014;
+                                        var loftwarerp014;
+                                        try {
+                                            let rp014field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP014';
+                                            });
+                                            loftwarerp014 = rp014field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp014 = '';
+                                        }
+                                        if (loftwarerp014) { Variables[loftwarerp014] = Material.rp014; }
                                     }
                                     if (Material.rp015) {
-                                        Variables.RP015 = Material.rp015;
+                                        var loftwarerp015;
+                                        try {
+                                            let rp015field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP015';
+                                            });
+                                            loftwarerp015 = rp015field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp015 = '';
+                                        }
+                                        if (loftwarerp015) { Variables[loftwarerp015] = Material.rp015; }
                                     }
                                     if (Material.rp016) {
-                                        Variables.RP016 = Material.rp016;
+                                        var loftwarerp016;
+                                        try {
+                                            let rp016field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP016';
+                                            });
+                                            loftwarerp016 = rp016field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp016 = '';
+                                        }
+                                        if (loftwarerp016) { Variables[loftwarerp016] = Material.rp016; }
                                     }
                                     if (Material.rp017) {
-                                        Variables.RP017 = Material.rp017;
+                                        var loftwarerp017;
+                                        try {
+                                            let rp017field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP017';
+                                            });
+                                            loftwarerp017 = rp017field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp017 = '';
+                                        }
+                                        if (loftwarerp017) { Variables[loftwarerp017] = Material.rp017; }
                                     }
                                     if (Material.rp018) {
-                                        Variables.RP018 = Material.rp018;
+                                        var loftwarerp018;
+                                        try {
+                                            let rp018field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP018';
+                                            });
+                                            loftwarerp018 = rp018field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp018 = '';
+                                        }
+                                        if (loftwarerp018) { Variables[loftwarerp018] = Material.rp018; }
                                     }
                                     if (Material.rp019) {
-                                        Variables.RP019 = Material.rp019;
+                                        var loftwarerp019;
+                                        try {
+                                            let rp019field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP019';
+                                            });
+                                            loftwarerp019 = rp019field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp019 = '';
+                                        }
+                                        if (loftwarerp019) { Variables[loftwarerp019] = Material.rp019; }
                                     }
                                     if (Material.rp020) {
-                                        Variables.RP020 = Material.rp020;
+                                        var loftwarerp020;
+                                        try {
+                                            let rp020field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP020';
+                                            });
+                                            loftwarerp020 = rp020field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp020 = '';
+                                        }
+                                        if (loftwarerp020) { Variables[loftwarerp020] = Material.rp020; }
                                     }
                                     if (Material.rp021) {
-                                        Variables.RP021 = Material.rp021;
+                                        var loftwarerp021;
+                                        try {
+                                            let rp021field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP021';
+                                            });
+                                            loftwarerp021 = rp021field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp021 = '';
+                                        }
+                                        if (loftwarerp021) { Variables[loftwarerp021] = Material.rp021; }
                                     }
                                     if (Material.rp022) {
-                                        Variables.RP022 = Material.rp022;
+                                        var loftwarerp022;
+                                        try {
+                                            let rp022field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP022';
+                                            });
+                                            loftwarerp022 = rp022field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp022 = '';
+                                        }
+                                        if (loftwarerp022) { Variables[loftwarerp022] = Material.rp022; }
                                     }
                                     if (Material.rp023) {
-                                        Variables.RP023 = Material.rp023;
+                                        var loftwarerp023;
+                                        try {
+                                            let rp023field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP023';
+                                            });
+                                            loftwarerp023 = rp023field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp023 = '';
+                                        }
+                                        if (loftwarerp023) { Variables[loftwarerp023] = Material.rp023; }
                                     }
                                     if (Material.rp024) {
-                                        Variables.RP024 = Material.rp024;
+                                        var loftwarerp024;
+                                        try {
+                                            let rp024field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP024';
+                                            });
+                                            loftwarerp024 = rp024field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp024 = '';
+                                        }
+                                        if (loftwarerp024) { Variables[loftwarerp024] = Material.rp024; }
                                     }
                                     if (Material.rp025) {
-                                        Variables.RP025 = Material.rp025;
+                                        var loftwarerp025;
+                                        try {
+                                            let rp025field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP025';
+                                            });
+                                            loftwarerp025 = rp025field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp025 = '';
+                                        }
+                                        if (loftwarerp025) { Variables[loftwarerp025] = Material.rp025; }
                                     }
                                     if (Material.rp026) {
-                                        Variables.RP026 = Material.rp026;
+                                        var loftwarerp026;
+                                        try {
+                                            let rp026field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP026';
+                                            });
+                                            loftwarerp026 = rp026field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp026 = '';
+                                        }
+                                        if (loftwarerp026) { Variables[loftwarerp026] = Material.rp026; }
                                     }
                                     if (Material.rp027) {
-                                        Variables.RP027 = Material.rp027;
+                                        var loftwarerp027;
+                                        try {
+                                            let rp027field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP027';
+                                            });
+                                            loftwarerp027 = rp027field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp027 = '';
+                                        }
+                                        if (loftwarerp027) { Variables[loftwarerp027] = Material.rp027; }
                                     }
                                     if (Material.rp028) {
-                                        Variables.RP028 = Material.rp028;
+                                        var loftwarerp028;
+                                        try {
+                                            let rp028field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP028';
+                                            });
+                                            loftwarerp028 = rp028field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp028 = '';
+                                        }
+                                        if (loftwarerp028) { Variables[loftwarerp028] = Material.rp028; }
                                     }
                                     if (Material.rp029) {
-                                        Variables.RP029 = Material.rp029;
+                                        var loftwarerp029;
+                                        try {
+                                            let rp029field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP029';
+                                            });
+                                            loftwarerp029 = rp029field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp029 = '';
+                                        }
+                                        if (loftwarerp029) { Variables[loftwarerp029] = Material.rp029; }
                                     }
                                     if (Material.rp030) {
-                                        Variables.RP030 = Material.rp030;
+                                        var loftwarerp030;
+                                        try {
+                                            let rp030field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP030';
+                                            });
+                                            loftwarerp030 = rp030field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp030 = '';
+                                        }
+                                        if (loftwarerp030) { Variables[loftwarerp030] = Material.rp030; }
                                     }
                                     if (Material.rp031) {
-                                        Variables.RP031 = Material.rp031;
+                                        var loftwarerp031;
+                                        try {
+                                            let rp031field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP031';
+                                            });
+                                            loftwarerp031 = rp031field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp031 = '';
+                                        }
+                                        if (loftwarerp031) { Variables[loftwarerp031] = Material.rp031; }
                                     }
                                     if (Material.rp032) {
-                                        Variables.RP032 = Material.rp032;
+                                        var loftwarerp032;
+                                        try {
+                                            let rp032field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP032';
+                                            });
+                                            loftwarerp032 = rp032field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp032 = '';
+                                        }
+                                        if (loftwarerp032) { Variables[loftwarerp032] = Material.rp032; }
                                     }
                                     if (Material.rp033) {
-                                        Variables.RP033 = Material.rp033;
+                                        var loftwarerp033;
+                                        try {
+                                            let rp033field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP033';
+                                            });
+                                            loftwarerp033 = rp033field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp033 = '';
+                                        }
+                                        if (loftwarerp033) { Variables[loftwarerp033] = Material.rp033; }
                                     }
                                     if (Material.rp034) {
-                                        Variables.RP034 = Material.rp034;
+                                        var loftwarerp034;
+                                        try {
+                                            let rp034field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP034';
+                                            });
+                                            loftwarerp034 = rp034field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp034 = '';
+                                        }
+                                        if (loftwarerp034) { Variables[loftwarerp034] = Material.rp034; }
                                     }
                                     if (Material.rp035) {
-                                        Variables.RP035 = Material.rp035;
+                                        var loftwarerp035;
+                                        try {
+                                            let rp035field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP035';
+                                            });
+                                            loftwarerp035 = rp035field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp035 = '';
+                                        }
+                                        if (loftwarerp035) { Variables[loftwarerp035] = Material.rp035; }
                                     }
                                     if (Material.rp036) {
-                                        Variables.RP036 = Material.rp036;
+                                        var loftwarerp036;
+                                        try {
+                                            let rp036field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP036';
+                                            });
+                                            loftwarerp036 = rp036field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp036 = '';
+                                        }
+                                        if (loftwarerp036) { Variables[loftwarerp036] = Material.rp036; }
                                     }
                                     if (Material.rp037) {
-                                        Variables.RP037 = Material.rp037;
+                                        var loftwarerp037;
+                                        try {
+                                            let rp037field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP037';
+                                            });
+                                            loftwarerp037 = rp037field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp037 = '';
+                                        }
+                                        if (loftwarerp037) { Variables[loftwarerp037] = Material.rp037; }
                                     }
                                     if (Material.rp038) {
-                                        Variables.RP038 = Material.rp038;
+                                        var loftwarerp038;
+                                        try {
+                                            let rp038field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP038';
+                                            });
+                                            loftwarerp038 = rp038field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp038 = '';
+                                        }
+                                        if (loftwarerp038) { Variables[loftwarerp038] = Material.rp038; }
                                     }
                                     if (Material.rp039) {
-                                        Variables.RP039 = Material.rp039;
+                                        var loftwarerp039;
+                                        try {
+                                            let rp039field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP039';
+                                            });
+                                            loftwarerp039 = rp039field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp039 = '';
+                                        }
+                                        if (loftwarerp039) { Variables[loftwarerp039] = Material.rp039; }
                                     }
                                     if (Material.rp040) {
-                                        Variables.RP040 = Material.rp040;
+                                        var loftwarerp040;
+                                        try {
+                                            let rp040field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP040';
+                                            });
+                                            loftwarerp040 = rp040field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp040 = '';
+                                        }
+                                        if (loftwarerp040) { Variables[loftwarerp040] = Material.rp040; }
                                     }
                                     if (Material.rp041) {
-                                        Variables.RP041 = Material.rp041;
+                                        var loftwarerp041;
+                                        try {
+                                            let rp041field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP041';
+                                            });
+                                            loftwarerp041 = rp041field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp041 = '';
+                                        }
+                                        if (loftwarerp041) { Variables[loftwarerp041] = Material.rp041; }
                                     }
                                     if (Material.rp042) {
-                                        Variables.RP042 = Material.rp042;
+                                        var loftwarerp042;
+                                        try {
+                                            let rp042field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP042';
+                                            });
+                                            loftwarerp042 = rp042field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp042 = '';
+                                        }
+                                        if (loftwarerp042) { Variables[loftwarerp042] = Material.rp042; }
                                     }
                                     if (Material.rp043) {
-                                        Variables.RP043 = Material.rp043;
+                                        var loftwarerp043;
+                                        try {
+                                            let rp043field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP043';
+                                            });
+                                            loftwarerp043 = rp043field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp043 = '';
+                                        }
+                                        if (loftwarerp043) { Variables[loftwarerp043] = Material.rp043; }
                                     }
                                     if (Material.rp044) {
-                                        Variables.RP044 = Material.rp044;
+                                        var loftwarerp044;
+                                        try {
+                                            let rp044field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP044';
+                                            });
+                                            loftwarerp044 = rp044field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp044 = '';
+                                        }
+                                        if (loftwarerp044) { Variables[loftwarerp044] = Material.rp044; }
                                     }
                                     if (Material.rp045) {
-                                        Variables.RP045 = Material.rp045;
+                                        var loftwarerp045;
+                                        try {
+                                            let rp045field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP045';
+                                            });
+                                            loftwarerp045 = rp045field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp045 = '';
+                                        }
+                                        if (loftwarerp045) { Variables[loftwarerp045] = Material.rp045; }
                                     }
                                     if (Material.rp046) {
-                                        Variables.RP046 = Material.rp046;
+                                        var loftwarerp046;
+                                        try {
+                                            let rp046field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP046';
+                                            });
+                                            loftwarerp046 = rp046field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp046 = '';
+                                        }
+                                        if (loftwarerp046) { Variables[loftwarerp046] = Material.rp046; }
                                     }
                                     if (Material.rp047) {
-                                        Variables.RP047 = Material.rp047;
+                                        var loftwarerp047;
+                                        try {
+                                            let rp047field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP047';
+                                            });
+                                            loftwarerp047 = rp047field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp047 = '';
+                                        }
+                                        if (loftwarerp047) { Variables[loftwarerp047] = Material.rp047; }
                                     }
                                     if (Material.rp048) {
-                                        Variables.RP048 = Material.rp048;
+                                        var loftwarerp048;
+                                        try {
+                                            let rp048field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP048';
+                                            });
+                                            loftwarerp048 = rp048field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp048 = '';
+                                        }
+                                        if (loftwarerp048) { Variables[loftwarerp048] = Material.rp048; }
                                     }
                                     if (Material.rp049) {
-                                        Variables.RP049 = Material.rp049;
+                                        var loftwarerp049;
+                                        try {
+                                            let rp049field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP049';
+                                            });
+                                            loftwarerp049 = rp049field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp049 = '';
+                                        }
+                                        if (loftwarerp049) { Variables[loftwarerp049] = Material.rp049; }
                                     }
                                     if (Material.rp050) {
-                                        Variables.RP050 = Material.rp050;
+                                        var loftwarerp050;
+                                        try {
+                                            let rp050field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP050';
+                                            });
+                                            loftwarerp050 = rp050field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp050 = '';
+                                        }
+                                        if (loftwarerp050) { Variables[loftwarerp050] = Material.rp050; }
                                     }
                                     if (Material.rp051) {
-                                        Variables.RP051 = Material.rp051;
+                                        var loftwarerp051;
+                                        try {
+                                            let rp051field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP051';
+                                            });
+                                            loftwarerp051 = rp051field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp051 = '';
+                                        }
+                                        if (loftwarerp051) { Variables[loftwarerp051] = Material.rp051; }
                                     }
                                     if (Material.rp052) {
-                                        Variables.RP052 = Material.rp052;
+                                        var loftwarerp052;
+                                        try {
+                                            let rp052field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP052';
+                                            });
+                                            loftwarerp052 = rp052field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp052 = '';
+                                        }
+                                        if (loftwarerp052) { Variables[loftwarerp052] = Material.rp052; }
                                     }
                                     if (Material.rp053) {
-                                        Variables.RP053 = Material.rp053;
+                                        var loftwarerp053;
+                                        try {
+                                            let rp053field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP053';
+                                            });
+                                            loftwarerp053 = rp053field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp053 = '';
+                                        }
+                                        if (loftwarerp053) { Variables[loftwarerp053] = Material.rp053; }
                                     }
                                     if (Material.rp054) {
-                                        Variables.RP054 = Material.rp054;
+                                        var loftwarerp054;
+                                        try {
+                                            let rp054field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP054';
+                                            });
+                                            loftwarerp054 = rp054field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp054 = '';
+                                        }
+                                        if (loftwarerp054) { Variables[loftwarerp054] = Material.rp054; }
                                     }
                                     if (Material.rp055) {
-                                        Variables.RP055 = Material.rp055;
+                                        var loftwarerp055;
+                                        try {
+                                            let rp055field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP055';
+                                            });
+                                            loftwarerp055 = rp055field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp055 = '';
+                                        }
+                                        if (loftwarerp055) { Variables[loftwarerp055] = Material.rp055; }
                                     }
                                     if (Material.rp056) {
-                                        Variables.RP056 = Material.rp056;
+                                        var loftwarerp056;
+                                        try {
+                                            let rp056field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP056';
+                                            });
+                                            loftwarerp056 = rp056field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp056 = '';
+                                        }
+                                        if (loftwarerp056) { Variables[loftwarerp056] = Material.rp056; }
                                     }
                                     if (Material.rp057) {
-                                        Variables.RP057 = Material.rp057;
+                                        var loftwarerp057;
+                                        try {
+                                            let rp057field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP057';
+                                            });
+                                            loftwarerp057 = rp057field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp057 = '';
+                                        }
+                                        if (loftwarerp057) { Variables[loftwarerp057] = Material.rp057; }
                                     }
                                     if (Material.rp058) {
-                                        Variables.RP058 = Material.rp058;
+                                        var loftwarerp058;
+                                        try {
+                                            let rp058field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP058';
+                                            });
+                                            loftwarerp058 = rp058field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp058 = '';
+                                        }
+                                        if (loftwarerp058) { Variables[loftwarerp058] = Material.rp058; }
                                     }
                                     if (Material.rp059) {
-                                        Variables.RP059 = Material.rp059;
+                                        var loftwarerp059;
+                                        try {
+                                            let rp059field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP059';
+                                            });
+                                            loftwarerp059 = rp059field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp059 = '';
+                                        }
+                                        if (loftwarerp059) { Variables[loftwarerp059] = Material.rp059; }
                                     }
                                     if (Material.rp060) {
-                                        Variables.RP060 = Material.rp060;
+                                        var loftwarerp060;
+                                        try {
+                                            let rp060field = oFieldData.filter(function (item) {
+                                                return item.sapfield === 'RP060';
+                                            });
+                                            loftwarerp060 = rp060field[0].loftwarefield;
+                                        } catch (error) {
+                                            loftwarerp060 = '';
+                                        }
+                                        if (loftwarerp060) { Variables[loftwarerp060] = Material.rp060; }
                                     }
                                     oLoftware.Variables.push(Variables);
 
@@ -758,7 +1399,7 @@ sap.ui.define([
                     MessageBox.warning("No Materials Characteristics Found!! Please try again");
                     oExecuteBusyModel.close();
                 }
-            }else{
+            } else {
                 MessageBox.warning("No Loftware Configurations maintaned!! Please Configure");
             }
         },
